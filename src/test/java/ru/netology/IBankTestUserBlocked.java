@@ -17,7 +17,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static io.restassured.RestAssured.given;
 
-public class IBankTest {
+public class IBankTestUserBlocked {
     private Faker faker;
 
     private static RequestSpecification requestSpec = new RequestSpecBuilder()
@@ -32,7 +32,7 @@ public class IBankTest {
     static void setUpAll() {
         given()
                 .spec(requestSpec)
-                .body(new RegistrationByLogin("vasya", "password", "active"))
+                .body(new RegistrationByLogin("irina", "123456", "blocked"))
                 .when()
                 .post("/api/system/users")
                 .then()
@@ -46,21 +46,12 @@ public class IBankTest {
     }
 
     @Test
-    void shouldLogIfExists() {
-        $("[data-test-id='login'] input").setValue("vasya");
-        $("[data-test-id='password'] input").setValue("password");
-        $("[data-test-id='action-login']").click();
-
-        $("div").shouldHave(exactText("  Личный кабинет"));
-    }
-
-    @Test
     void shouldNotLog() {
-        $("[data-test-id='login'] input").setValue(faker.internet().emailAddress());
-        $("[data-test-id='password'] input").setValue(faker.internet().password());
+        $("[data-test-id='login'] input").setValue("irina");
+        $("[data-test-id='password'] input").setValue("123456");
         $("[data-test-id='action-login']").click();
 
         $("[data-test-id='error-notification']").waitUntil(visible, 10000)
-                .shouldHave(exactText("Ошибка Ошибка! Неверно указан логин или пароль"));
+                .shouldHave(exactText("Ошибка Ошибка! Пользователь заблокирован"));
     }
 }
