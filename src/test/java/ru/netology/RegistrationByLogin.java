@@ -1,15 +1,14 @@
 package ru.netology;
 
-import com.github.javafaker.Faker;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Locale;
+import lombok.NoArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegistrationByLogin {
-    private final String login;
-    private final String password;
-    private final String status;
+    private String login;
+    private String password;
+    private String status;
 }
